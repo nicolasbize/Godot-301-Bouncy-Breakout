@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://cgu5ypx81fsf1"]
+
+[ext_resource type="PackedScene" uid="uid://b6sj28avjofa" path="res://bricks/brick.tscn" id="1_vasq8"]
+[ext_resource type="Texture2D" uid="uid://x3xovufykciv" path="res://assets/textures/brick-hard.png" id="2_y25bf"]
+
+[node name="HardBrick" unique_id=136605214 instance=ExtResource("1_vasq8")]
+
+[node name="BrickSprite" parent="." index="0" unique_id=999796432]
+texture = ExtResource("2_y25bf")
+vframes = 2

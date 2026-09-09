@@ -30,6 +30,18 @@ tracks/0/keys = {
 "update": 0,
 "values": [Vector2(46, -67)]
 }
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("WinLabel:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(46, -67)]
+}
 
 [sub_resource type="Animation" id="Animation_t5ptc"]
 resource_name = "lose"
@@ -62,10 +74,28 @@ tracks/1/keys = {
 }]
 }
 
+[sub_resource type="Animation" id="Animation_j2gmx"]
+resource_name = "win"
+length = 1.5
+step = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("WinLabel:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 1, 1.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(46, -67), Vector2(46, 50), Vector2(46, 50), Vector2(46, 178)]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_bq33v"]
 _data = {
 &"RESET": SubResource("Animation_bq33v"),
-&"lose": SubResource("Animation_t5ptc")
+&"lose": SubResource("Animation_t5ptc"),
+&"win": SubResource("Animation_j2gmx")
 }
 
 [node name="World" type="Node2D" unique_id=1139018046]
@@ -131,7 +161,22 @@ text = "YOU CAN
 DO THIS"
 horizontal_alignment = 1
 
+[node name="WinLabel" type="Label" parent="." unique_id=1237622335]
+offset_left = 46.0
+offset_top = -67.0
+offset_right = 164.0
+offset_bottom = -10.0
+theme_override_colors/font_color = Color(0.19607843, 0.84705883, 0.25882354, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 4
+theme_override_fonts/font = ExtResource("6_t5ptc")
+theme_override_font_sizes/font_size = 30
+text = "YOU ARE
+AWESOME"
+horizontal_alignment = 1
+
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1000882098]
 libraries/ = SubResource("AnimationLibrary_bq33v")
 
+[connection signal="cleared" from="Level" to="." method="_on_level_cleared"]
 [connection signal="body_entered" from="BallDetectionArea" to="." method="_on_ball_detection_area_body_entered"]

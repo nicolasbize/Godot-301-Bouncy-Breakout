@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://b3vk7a5whould"]
+
+[ext_resource type="PackedScene" uid="uid://b6sj28avjofa" path="res://bricks/brick.tscn" id="1_yaflh"]
+[ext_resource type="Texture2D" uid="uid://ctnhubhbnoulf" path="res://assets/textures/brick-bomb.png" id="2_a38vg"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_j1vhn"]
+
+[node name="BombBrick" unique_id=136605214 instance=ExtResource("1_yaflh")]
+
+[node name="BrickSprite" parent="." index="0" unique_id=999796432]
+texture = ExtResource("2_a38vg")
+
+[node name="CollisionShape2D" parent="ExplosionArea" parent_id_path=PackedInt32Array(827169840) index="0" unique_id=1836821983]
+rotation = 1.5707964
+shape = SubResource("CapsuleShape2D_j1vhn")
