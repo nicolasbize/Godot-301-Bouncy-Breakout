@@ -7,6 +7,7 @@
 radius = 3.0
 
 [node name="Ball" type="CharacterBody2D" unique_id=227620697]
+collision_layer = 2
 script = ExtResource("1_pwunn")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1583400019]

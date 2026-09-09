@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://bkoxd8ed547ke"]
+
+[ext_resource type="PackedScene" uid="uid://b6sj28avjofa" path="res://bricks/brick.tscn" id="1_pc10u"]
+[ext_resource type="Texture2D" uid="uid://yq2cjqmomljb" path="res://assets/textures/brick-balls.png" id="2_ef5na"]
+
+[node name="SpawnBrick" unique_id=136605214 instance=ExtResource("1_pc10u")]
+balls_spawned = 2
+points = 15
+
+[node name="BrickSprite" parent="." index="0" unique_id=999796432]
+texture = ExtResource("2_ef5na")

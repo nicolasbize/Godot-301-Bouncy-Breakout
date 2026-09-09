@@ -1,14 +1,16 @@
 class_name Brick
 extends StaticBody2D
 
-signal destroyed
+signal destroyed(brick: Brick)
 
 @onready var brick_sprite: Sprite2D = $BrickSprite
 @onready var explosion_area: Area2D = $ExplosionArea
 
+@export var balls_spawned := 0
+@export var points := 10
+
 var health := 0
 var is_dying := false
-
 
 func _ready() -> void:
 	health = brick_sprite.vframes
@@ -20,7 +22,7 @@ func take_damage() -> void:
 			brick_sprite.frame += 1
 		else:
 			is_dying = true
-			destroyed.emit()
+			destroyed.emit(self)
 			queue_free()
 			explode_neighbors()
 

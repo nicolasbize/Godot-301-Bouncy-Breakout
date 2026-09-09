@@ -6,6 +6,7 @@
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_j1vhn"]
 
 [node name="BombBrick" unique_id=136605214 instance=ExtResource("1_yaflh")]
+points = 20
 
 [node name="BrickSprite" parent="." index="0" unique_id=999796432]
 texture = ExtResource("2_a38vg")

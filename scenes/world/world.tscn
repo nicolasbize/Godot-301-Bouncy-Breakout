@@ -3,7 +3,6 @@
 [ext_resource type="Texture2D" uid="uid://gri860aiwpe1" path="res://assets/textures/background.png" id="1_dphjl"]
 [ext_resource type="Script" uid="uid://cela4a0nt1n5k" path="res://scenes/world/world.gd" id="1_v5dby"]
 [ext_resource type="PackedScene" uid="uid://clt3rsqvrps2b" path="res://paddle/paddle.tscn" id="2_sl2e5"]
-[ext_resource type="PackedScene" uid="uid://cmvedrewrdpf3" path="res://ball/ball.tscn" id="3_1fp7r"]
 [ext_resource type="PackedScene" uid="uid://brsid0aaxv6dk" path="res://level/level.tscn" id="4_6m72w"]
 [ext_resource type="FontFile" uid="uid://b236pjjfcyv6t" path="res://assets/fonts/boldpixels.ttf" id="6_t5ptc"]
 
@@ -106,12 +105,18 @@ texture = ExtResource("1_dphjl")
 centered = false
 metadata/_edit_lock_ = true
 
+[node name="ScoreLabel" type="Label" parent="." unique_id=1324141835]
+offset_left = 16.0
+offset_top = 56.0
+offset_right = 185.0
+offset_bottom = 101.0
+theme_override_colors/font_color = Color(0.1882353, 0.1882353, 0.32941177, 1)
+theme_override_fonts/font = ExtResource("6_t5ptc")
+theme_override_font_sizes/font_size = 50
+text = "000000"
+
 [node name="Paddle" parent="." unique_id=2007306204 instance=ExtResource("2_sl2e5")]
 position = Vector2(99, 146)
-
-[node name="Ball" parent="." unique_id=227620697 node_paths=PackedStringArray("paddle") instance=ExtResource("3_1fp7r")]
-position = Vector2(100, 124)
-paddle = NodePath("../Paddle")
 
 [node name="LeftWall" type="StaticBody2D" parent="." unique_id=1458735953]
 metadata/_edit_lock_ = true
@@ -142,6 +147,7 @@ metadata/_edit_lock_ = true
 
 [node name="BallDetectionArea" type="Area2D" parent="." unique_id=50170511]
 position = Vector2(0, 181)
+collision_mask = 3
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="BallDetectionArea" unique_id=658886030]
 position = Vector2(100, 0)
@@ -179,4 +185,6 @@ horizontal_alignment = 1
 libraries/ = SubResource("AnimationLibrary_bq33v")
 
 [connection signal="cleared" from="Level" to="." method="_on_level_cleared"]
+[connection signal="points_scored" from="Level" to="." method="_on_level_points_scored"]
+[connection signal="spawn_requested" from="Level" to="." method="_on_level_spawn_requested"]
 [connection signal="body_entered" from="BallDetectionArea" to="." method="_on_ball_detection_area_body_entered"]
