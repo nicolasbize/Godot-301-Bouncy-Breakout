@@ -1,9 +1,11 @@
 [gd_scene format=3 uid="uid://bg63x4dt1rcdo"]
 
 [ext_resource type="Texture2D" uid="uid://gri860aiwpe1" path="res://assets/textures/background.png" id="1_dphjl"]
+[ext_resource type="Script" uid="uid://cela4a0nt1n5k" path="res://scenes/world/world.gd" id="1_v5dby"]
 [ext_resource type="PackedScene" uid="uid://clt3rsqvrps2b" path="res://paddle/paddle.tscn" id="2_sl2e5"]
 [ext_resource type="PackedScene" uid="uid://cmvedrewrdpf3" path="res://ball/ball.tscn" id="3_1fp7r"]
-[ext_resource type="PackedScene" uid="uid://b6sj28avjofa" path="res://bricks/brick.tscn" id="4_6m72w"]
+[ext_resource type="PackedScene" uid="uid://brsid0aaxv6dk" path="res://level/level.tscn" id="4_6m72w"]
+[ext_resource type="FontFile" uid="uid://b236pjjfcyv6t" path="res://assets/fonts/boldpixels.ttf" id="6_t5ptc"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_cbyeo"]
 size = Vector2(10, 170)
@@ -11,7 +13,63 @@ size = Vector2(10, 170)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_umx8v"]
 size = Vector2(220, 10)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_abqvh"]
+size = Vector2(220, 20)
+
+[sub_resource type="Animation" id="Animation_bq33v"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("LoseLabel:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(46, -67)]
+}
+
+[sub_resource type="Animation" id="Animation_t5ptc"]
+resource_name = "lose"
+length = 1.5
+step = 0.25
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("LoseLabel:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 1, 1.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(46, -67), Vector2(46, 50), Vector2(46, 50), Vector2(46, 171)]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.75),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"create_new_ball"
+}]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_bq33v"]
+_data = {
+&"RESET": SubResource("Animation_bq33v"),
+&"lose": SubResource("Animation_t5ptc")
+}
+
 [node name="World" type="Node2D" unique_id=1139018046]
+script = ExtResource("1_v5dby")
 
 [node name="Background" type="Sprite2D" parent="." unique_id=1117078373]
 texture = ExtResource("1_dphjl")
@@ -21,9 +79,9 @@ metadata/_edit_lock_ = true
 [node name="Paddle" parent="." unique_id=2007306204 instance=ExtResource("2_sl2e5")]
 position = Vector2(99, 146)
 
-[node name="Ball" parent="." unique_id=227620697 instance=ExtResource("3_1fp7r")]
-position = Vector2(100, 100)
-speed = 120.0
+[node name="Ball" parent="." unique_id=227620697 node_paths=PackedStringArray("paddle") instance=ExtResource("3_1fp7r")]
+position = Vector2(100, 124)
+paddle = NodePath("../Paddle")
 
 [node name="LeftWall" type="StaticBody2D" parent="." unique_id=1458735953]
 metadata/_edit_lock_ = true
@@ -50,14 +108,30 @@ position = Vector2(100, -5)
 shape = SubResource("RectangleShape2D_umx8v")
 metadata/_edit_lock_ = true
 
-[node name="Brick" parent="." unique_id=136605214 instance=ExtResource("4_6m72w")]
-position = Vector2(53, 66)
+[node name="Level" parent="." unique_id=678713233 instance=ExtResource("4_6m72w")]
 
-[node name="Brick2" parent="." unique_id=222187927 instance=ExtResource("4_6m72w")]
-position = Vector2(73, 66)
+[node name="BallDetectionArea" type="Area2D" parent="." unique_id=50170511]
+position = Vector2(0, 181)
 
-[node name="Brick3" parent="." unique_id=1403905993 instance=ExtResource("4_6m72w")]
-position = Vector2(93, 66)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BallDetectionArea" unique_id=658886030]
+position = Vector2(100, 0)
+shape = SubResource("RectangleShape2D_abqvh")
 
-[node name="Brick4" parent="." unique_id=1942023341 instance=ExtResource("4_6m72w")]
-position = Vector2(113, 66)
+[node name="LoseLabel" type="Label" parent="." unique_id=1651681729]
+offset_left = 46.0
+offset_top = -67.0
+offset_right = 159.0
+offset_bottom = -10.0
+theme_override_colors/font_color = Color(1, 0.4117647, 1, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 4
+theme_override_fonts/font = ExtResource("6_t5ptc")
+theme_override_font_sizes/font_size = 30
+text = "YOU CAN
+DO THIS"
+horizontal_alignment = 1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1000882098]
+libraries/ = SubResource("AnimationLibrary_bq33v")
+
+[connection signal="body_entered" from="BallDetectionArea" to="." method="_on_ball_detection_area_body_entered"]
