@@ -1,6 +1,9 @@
 class_name Ball
 extends CharacterBody2D
 
+@onready var sprite_2d: Sprite2D = $Sprite2D
+@onready var audio_stream_player: AudioStreamPlayer = $AudioStreamPlayer
+
 @export var paddle : Paddle
 @export var speed := 120.0 # pixels per sec
 @export var min_angle := 0.4
@@ -28,16 +31,23 @@ func launch(spawn_position: Vector2) -> void:
 func fly(delta: float) -> void:
 	var collision := move_and_collide(velocity * delta)
 	if collision != null:
+		var old_sign_vx : int = sign(velocity.x)
 		var collider := collision.get_collider()
 		if collider is Paddle:
-			var paddle : Paddle = collider
 			velocity = get_velocity_from_paddle(paddle)
+			paddle.bounce()
 		else:
 			if collider is Brick:
 				var brick : Brick = collider
 				brick.take_damage()
+			else:
+				audio_stream_player.play()
 			velocity = velocity.bounce(collision.get_normal())
 			fix_shallow_angle()
+		if old_sign_vx == sign(velocity.x):
+			squish_horizontal()
+		else:
+			squish_vertical()
 
 func get_velocity_from_paddle(paddle: Paddle) -> Vector2:
 	var paddle_half_width := 16
@@ -52,3 +62,17 @@ func fix_shallow_angle() -> void:
 	elif direction.y < 0 and direction.y > -min_angle:
 		direction.y = -min_angle
 	velocity = direction * speed
+
+func squish_horizontal() -> void:
+	create_tween() \
+		.tween_property(sprite_2d, "scale", Vector2(1, 1), 1.0) \
+		.from(Vector2(1.7, 0.8)) \
+		.set_trans(Tween.TRANS_ELASTIC) \
+		.set_ease(Tween.EASE_OUT)
+		
+func squish_vertical() -> void:
+	create_tween() \
+		.tween_property(sprite_2d, "scale", Vector2(1, 1), 1.0) \
+		.from(Vector2(0.8, 1.7)) \
+		.set_trans(Tween.TRANS_ELASTIC) \
+		.set_ease(Tween.EASE_OUT)

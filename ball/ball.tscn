@@ -2,6 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://ckmyvttfbcieb" path="res://assets/textures/ball.png" id="1_6plaf"]
 [ext_resource type="Script" uid="uid://ddrgx6rwv2l5i" path="res://ball/ball.gd" id="1_pwunn"]
+[ext_resource type="AudioStream" uid="uid://dxgmwg5ul4f2v" path="res://assets/sounds/wall-bounce.wav" id="3_biv8x"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_cbyeo"]
 radius = 3.0
@@ -15,3 +16,6 @@ texture = ExtResource("1_6plaf")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=799068710]
 shape = SubResource("CircleShape2D_cbyeo")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=840385164]
+stream = ExtResource("3_biv8x")

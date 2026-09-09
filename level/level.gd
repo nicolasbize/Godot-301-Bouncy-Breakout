@@ -12,7 +12,7 @@ var spawnbrick_blueprint := preload("res://bricks/spawn_brick.tscn")
 
 var nb_bricks_left := 0
 
-var level : Array[String] = [
+var levels : Array[Array] = [[
 	"0B0000000",
 	"0000  000",
 	"0B 00B000",
@@ -21,30 +21,50 @@ var level : Array[String] = [
 	"000 00H00",
 	"000H0B000",
 	"0+00B00B0",
-] 
+], [
+	"000H0B0 0",
+	"0+0H0B000",
+	"00+ 0B000",
+	"0B0H0B0B0",
+	"00 H0B0+0",
+	"000H0B000",
+	"0B+B0B000",
+	"0B0H+B00B",
+]]
+
+var current_level_index := -1
 
 func _ready() -> void:
-	var nb_rows := 8
-	var nb_cols := 9
-	var top_left := Vector2(20, 20)
-	# 20px every brick horizontally
-	# 10px every brick vertically
-	for y in nb_rows:
-		for x in nb_cols:
-			var brick : Brick = null
-			if level[y][x] == "0":
-				brick = brick_blueprint.instantiate()
-			elif level[y][x] == "H":
-				brick = hardbrick_blueprint.instantiate()
-			elif level[y][x] == "B":
-				brick = bombbrick_blueprint.instantiate()
-			elif level[y][x] == "+":
-				brick = spawnbrick_blueprint.instantiate()
-			if brick != null:
-				nb_bricks_left += 1
-				brick.destroyed.connect(on_brick_destroyed)
-				brick.position = top_left + Vector2(20 * x, 10 * y)
-				add_child(brick)
+	load_next_level()
+
+func has_next_level() -> bool:
+	return current_level_index < levels.size() - 1
+
+func load_next_level() -> void:
+	if has_next_level():
+		current_level_index += 1
+		var level : Array = levels[current_level_index]
+		var nb_rows := 8
+		var nb_cols := 9
+		var top_left := Vector2(20, 20)
+		# 20px every brick horizontally
+		# 10px every brick vertically
+		for y in nb_rows:
+			for x in nb_cols:
+				var brick : Brick = null
+				if level[y][x] == "0":
+					brick = brick_blueprint.instantiate()
+				elif level[y][x] == "H":
+					brick = hardbrick_blueprint.instantiate()
+				elif level[y][x] == "B":
+					brick = bombbrick_blueprint.instantiate()
+				elif level[y][x] == "+":
+					brick = spawnbrick_blueprint.instantiate()
+				if brick != null:
+					nb_bricks_left += 1
+					brick.destroyed.connect(on_brick_destroyed)
+					brick.position = top_left + Vector2(20 * x, 10 * y)
+					add_child(brick)
 				
 func on_brick_destroyed(brick: Brick) -> void:
 	nb_bricks_left -= 1
