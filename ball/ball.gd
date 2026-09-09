@@ -2,6 +2,7 @@ extends CharacterBody2D
 
 @export var speed := 2.0
 
+
 func _ready() -> void:
 	var direction := Vector2(randf_range(-1, 1), -1).normalized()
 	velocity = direction * speed
